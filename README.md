@@ -13,7 +13,7 @@ npm i shama --save-dev
 npm run watch
 ```
 
-## `require('shama')`
+### `require('shama')`
 
 Create something like this or use `./node_modules/.bin/shama`:
 
@@ -49,7 +49,7 @@ require('shama')(path.resolve(__dirname, '..'))
 }
 ```
 
-## `require('shama/build')`
+### `require('shama/build')`
 
 ```js
 // Compile a index.html, index.js and index.css file
@@ -70,7 +70,7 @@ build.all({
 })
 ```
 
-## `require('shama/server')`
+### `require('shama/server')`
 
 ```js
 // Starts a server using jaws on port 8080
@@ -88,7 +88,7 @@ var server = require('shama/server')({
 server.start(8080)
 ```
 
-## `require('shama/watch')`
+### `require('shama/watch')`
 
 ```js
 require('shama/watch')({
