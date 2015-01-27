@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A build/server/watch thing for me",
   "main": "index.js",
+  "bin": {
+    "shama": "bin/shama"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/shama/shama"
@@ -22,6 +25,7 @@
   "homepage": "https://github.com/shama/shama",
   "dependencies": {
     "browserify": "^8.1.1",
+    "cpr": "^0.3.2",
     "gaze": "^0.5.1",
     "jaws": "^0.12.1",
     "nib": "^1.1.0",

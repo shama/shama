@@ -4,11 +4,28 @@ Things for helping me build other things.
 
 > Have an opinion on my things? Great! Fork and publish your own thing.
 
-## `require('shama')`
-
-Create these files:
+## quick start
 
 ```shell
+npm init
+npm i shama --save-dev
+./node_modules/.bin/shama
+npm run watch
+```
+
+## `require('shama')`
+
+Create something like this or use `./node_modules/.bin/shama`:
+
+```shell
+./
+├── app
+│   ├── css
+│   │   └── index.styl
+│   └── index.js
+├── bin
+│   └── build.js
+└── package.json
 ```
 
 **`bin/build.js`**
