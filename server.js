@@ -1,5 +1,6 @@
 var path = require('path')
 var jaws = require('jaws')
+var log = require('./log')()
 
 function Server(data) {
   if (!(this instanceof Server)) return new Server(data)
@@ -32,7 +33,9 @@ module.exports = Server
 
 Server.prototype.start = function(port, cb) {
   port = port || 8080
-  this.app.httpServer.listen(port, cb || function() {})
+  this.app.httpServer.listen(port, cb || function() {
+    log.info('started on ' + port, 'server')
+  })
   return this
 }
 

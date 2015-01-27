@@ -3,6 +3,7 @@ var fs = require('fs')
 var browserify = require('browserify')
 var stylus = require('stylus')
 var nib = require('nib')
+var log = require('./log')()
 
 function Build(cwd) {
   if (!(this instanceof Build)) return new Build(cwd)
@@ -43,23 +44,30 @@ Build.prototype.all = function(opts, cb) {
 }
 
 Build.prototype.css = function(opts, cb) {
+  var self = this
   cb = cb || function() {}
   opts = opts || {}
   var src = path.resolve(this.cwd, opts.src || this.defaults.css.src)
   var dest = path.resolve(this.cwd, opts.dest || this.defaults.css.dest)
-  var styl = stylus(src, opts)
-  styl.use(nib())
-  styl.render(function(err, css) {
-    if (err) return cb(err)
+  fs.readFile(src, function(err, stylSrc) {
+    if (err) return log.err(err, 'css', cb)
+    var styl = stylus(stylSrc.toString(), opts)
+    styl.use(nib())
+    styl.render(writeFile)
+  })
+  function writeFile(err, css) {
+    if (err) return log.err(err, 'css', cb)
     fs.writeFile(dest, css, function(err) {
-      if (err) return cb(err)
+      if (err) return log.err(err, 'css', cb)
+      log.info(path.relative(self.cwd, dest), 'css')
       cb(null, css)
     })
-  })
+  }
   return this
 }
 
 Build.prototype.js = function(opts, cb) {
+  var self = this
   cb = cb || function() {}
   opts = opts || {}
   var src = path.resolve(this.cwd, opts.src || this.defaults.js.src)
@@ -67,9 +75,10 @@ Build.prototype.js = function(opts, cb) {
   var b = browserify(opts)
   b.add(src)
   b.bundle(function(err, js) {
-    if (err) return cb(err)
+    if (err) return log.err(err, 'js', cb)
     fs.writeFile(dest, js, function(err) {
-      if (err) return cb(err)
+      if (err) return log.err(err, 'js', cb)
+      log.info(path.relative(self.cwd, dest), 'js')
       cb(null, js)
     })
   })
@@ -77,6 +86,7 @@ Build.prototype.js = function(opts, cb) {
 }
 
 Build.prototype.html = function(opts, cb) {
+  var self = this
   cb = cb || function() {}
   opts = opts || {}
   var dest = path.resolve(this.cwd, opts.dest || this.defaults.html.dest)
@@ -96,7 +106,8 @@ Build.prototype.html = function(opts, cb) {
     '</html>',
   ].join('\n')
   fs.writeFile(dest, tpl, function(err) {
-    if (err) return cb(err)
+    if (err) return log.err(err, 'html', cb)
+    log.info(path.relative(self.cwd, dest), 'html')
     cb(null, tpl)
   })
   return this

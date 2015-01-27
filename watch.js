@@ -1,8 +1,10 @@
 var path = require('path')
 var gaze = require('gaze')
+var log = require('./log')()
 
 function Watch(data) {
   if (!(this instanceof Watch)) return new Watch(data)
+  var self = this
   data = data || {}
 
   this.cwd = process.cwd()
@@ -17,7 +19,8 @@ function Watch(data) {
     if (!data.hasOwnProperty(keys[i])) continue
     var fn = data[keys[i]]
     var g = gaze(keys[i], {cwd:this.cwd}, function() {
-      this.on('all', function() {
+      this.on('all', function(e, f) {
+        log.info(path.relative(self.cwd, f) + ' was ' + e, 'watch')
         fn()
       })
     })
