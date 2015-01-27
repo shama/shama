@@ -1,0 +1,28 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node bin/build.js",
+    "watch": "node bin/build.js watch",
+    "test": "node test/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/shama/project"
+  },
+  "keywords": [
+  ],
+  "author": "Kyle Robinson Young <kyle@dontkry.com> (http://dontkry.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shama/project/issues"
+  },
+  "homepage": "https://github.com/shama/project",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "shama": "^1.0.0"
+  }
+}

@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+var path = require('path')
+var cpr = require('cpr')
+
+var tpl = path.resolve(__dirname, 'tpl')
+cpr(tpl, process.cwd(), {
+  // TODO: These dont really work for some reason
+  deleteFirst: false,
+  overwrite: false,
+}, function() {
+  console.log('Done.')
+})
