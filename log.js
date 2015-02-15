@@ -22,3 +22,8 @@ Log.prototype.err = function(err, ns, cb) {
   if (typeof cb === 'function') cb(err)
   return this
 }
+
+Log.prototype.beep = function() {
+  this.stdout.write('\x07')
+  return this
+}

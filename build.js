@@ -35,7 +35,10 @@ Build.prototype.all = function(opts, cb) {
   count = 3
   function done() {
     count--
-    if (count < 1) cb()
+    if (count < 1) {
+      log.beep()
+      cb()
+    }
   }
   return this
     .css(opts.css, done)
