@@ -50,7 +50,7 @@ Build.prototype.css = function(opts, cb) {
   var self = this
   cb = cb || function() {}
   opts = opts || {}
-  var src = path.resolve(this.cwd, opts.src || this.defaults.css.src)
+  var src = this.defaulted(opts.src, 'css.src')
   var dest = path.resolve(this.cwd, opts.dest || this.defaults.css.dest)
   fs.readFile(src, function(err, stylSrc) {
     if (err) return log.err(err, 'css', cb)
@@ -73,7 +73,7 @@ Build.prototype.js = function(opts, cb) {
   var self = this
   cb = cb || function() {}
   opts = opts || {}
-  var src = path.resolve(this.cwd, opts.src || this.defaults.js.src)
+  var src = this.defaulted(opts.src, 'js.src')
   var dest = path.resolve(this.cwd, opts.dest || this.defaults.js.dest)
   var b = browserify(opts)
   b.add(src)
@@ -114,4 +114,26 @@ Build.prototype.html = function(opts, cb) {
     cb(null, tpl)
   })
   return this
+}
+
+Build.prototype.defaulted = function(val, defaultPath) {
+  if (val) return val
+  function woext(file) {
+    return path.basename(file, path.extname(file))
+  }
+  var def = this.dotpath(defaultPath, this.defaults)
+  if (!def) return defaultPath
+  var defPath = path.resolve(this.cwd, def)
+  var dir = path.dirname(defPath)
+  var basename = woext(def)
+  var file = fs.readdirSync(dir).reduce(function(cur, next) {
+    return (woext(next) === basename) ? next : cur
+  }, def)
+  return path.resolve(dir, file)
+}
+
+Build.prototype.dotpath = function(p, obj) {
+  return p.split('.').reduce(function(o, i) {
+    return o[i]
+  }, obj)
 }
